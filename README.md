@@ -5,4 +5,4 @@
 ##
 git add <ten_file> / .
 git commit -m "detail message"
-git push
+git push  
