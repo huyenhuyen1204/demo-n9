@@ -1,0 +1,25 @@
+ public static void main(String[] args) throws IOException {
+    try (Repository repository = CookbookHelper.openJGitCookbookRepository()) {
+      // a RevWalk allows to retrieve information from the repository
+      try (RevWalk walk = new RevWalk(repository)) {
+        // a simple tag that is not annotated
+        Ref simpleTag = repository.findRef("initialtag");
+        RevObject any = walk.parseAny(simpleTag.getObjectId());
+        System.out.println("Commit: " + any);
+
+        // an annotated tag
+        Ref annotatedTag = repository.findRef("secondtag");
+        any = walk.parseAny(annotatedTag.getObjectId());
+        System.out.println("Tag: " + any);
+
+        // finally try to print out the tag-content
+        System.out.println("\nTag-Content: \n");
+        ObjectLoader loader = repository.open(annotatedTag.getObjectId());
+        loader.copyTo(System.out);
+
+        walk.dispose();
+      }
+    }
+  }
+}
+https://www.tabnine.com/code/java/methods/org.eclipse.jgit.lib.Repository/findRef
